@@ -3,6 +3,7 @@ import SideBar from "../../components/SideBar";
 import { Dropdown } from "primereact/dropdown";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import EditStudentModal from "../../components/EditStudentModal";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 
 const AdminDashboard = () => {
   const [numberOfStudents, setNumberOfStudents] = useState(null);
@@ -23,6 +24,13 @@ const AdminDashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Remove the token from local storage
+    navigate("/"); // Redirect to the login page
+  };
 
   // Function to open modal with selected student data
   const handleEditStudent = (studentId) => {
@@ -116,6 +124,7 @@ const AdminDashboard = () => {
       const response = await fetch(`http://localhost:3001/api/students`);
       const data = await response.json();
       setStudents(data.students);
+      setFilteredStudents(data.students);
       setNumberOfStudents(data.count);
     } catch (error) {
       console.error("Error fetching students:", error);
@@ -260,9 +269,17 @@ const AdminDashboard = () => {
       <div className="flex-grow md:ml-64">
         {/* Fixed Header */}
         <div className="fixed top-0 left-0 md:left-[256px] right-0 bg-white shadow-md p-6 z-10">
-          <h1 className="text-3xl text-gray-700 font-semibold pl-8 ">
-            Admin Dashboard
-          </h1>
+          <div className="flex justify-between">
+            <h1 className="text-3xl text-gray-700 font-semibold pl-8 ">
+              Admin Dashboard
+            </h1>
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
+            >
+              Logout
+            </button>
+          </div>
         </div>
         <div className="flex flex-col justify-center min-h-screen max-h-full pt-24 bg-gray-300 ">
           <div className="m-6">
