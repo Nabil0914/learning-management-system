@@ -2,6 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import StudentDashboard from "./StudentDashboard";
 import StudentExperiment from "./StudentExperiment";
 import UploadAssignment from "./UploadAssignment";
+import UploadExperiment from "./UploadExperiment";
+import ViewExperiments from "./ViewExperiment";
 
 const Student = () => {
   return (
@@ -12,6 +14,8 @@ const Student = () => {
         path="assignment/:assignmentId/upload"
         element={<UploadAssignment />}
       />
+      <Route path="/upload/:rollno" element={<UploadExperiment />} />
+      <Route path="/experiments/:rollno" element={<ViewExperiments/>}/>
     </Routes>
   );
 };
